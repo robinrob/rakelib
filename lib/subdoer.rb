@@ -25,7 +25,7 @@ class SubDoer
     end
 
     if (config[:not_recursive] == nil) && (repo.submodules.length > 0)
-      puts "#{indent}Recursing into #{repo.path} ...".light_cyan
+      puts "#{indent}Recursing into #{repo.path} ...".cyan
 
       repo.submodules.each do |submodule|
         each_sub(submodule, command, config)

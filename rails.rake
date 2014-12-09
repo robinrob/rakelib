@@ -34,12 +34,12 @@ namespace :rails do
 
 
   desc 'Deploy the Rails project to Heroku, pre-compiling assets first.'
-  task :deploy, [:environment] => ['rails:precompile', :install, :save] do |t, args|
-    environment = args[:environment] || 'production'
-    puts "Deploying to: ".green << "#{environment}".yellow
+  task :deploy, [:app] => ['rails:precompile', :install, :save, 'git:remotes'] do |t, args|
+    app = args[:app] || 'production'
+    puts "Deploying to: ".green << "#{app}".yellow
 
-    system("git push #{environment} master")
-    system("heroku run rake db:migrate")
+    system("git push #{app} master")
+    system("heroku run rake db:migrate -a #{app}")
   end
 
   desc 'Deploy the Rails project to Heroku, pre-compiling assets first.'
