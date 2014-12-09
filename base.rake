@@ -32,5 +32,4 @@ end
 
 
 desc 'Stage, commit, pull & push.'
-task :save, [:msg] => ['git:commit', 'git:pull', 'git:push'] do |t, args|
-end
+task :save, [:msg] => ['git:commit', 'git:pull', 'git:push']

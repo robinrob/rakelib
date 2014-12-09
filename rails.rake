@@ -17,7 +17,6 @@ end
 namespace :rails do
   desc 'Start Rails server.'
 	task :server => 'rails:kill' do
-	  Rake::Task["kill"].execute()
 	  system("rails server")
 	end
 
@@ -41,5 +40,10 @@ namespace :rails do
 
     system("git push #{environment} master")
     system("heroku run rake db:migrate")
+  end
+
+  desc 'Deploy the Rails project to Heroku, pre-compiling assets first.'
+  task :haml => ['haml:replace_erbs'] do
+    system("gfind . -name '*.erb'")
   end
 end
