@@ -1,20 +1,25 @@
-$LOAD_PATH << '.'
-$LOAD_PATH << 'lib'
-$LOAD_PATH << 'rake'
-$LOAD_PATH << 'rake/lib'
-
-
 namespace :jekyll do
 
   desc 'Start Jekyll server.'
-	task :server => 'jekyll:kill' do
-	  system("jekyll serve --watch --detach")
+	task :server => [:kill, :haml] do
+	  system("jekyll serve --watch")
 	end
 
 
   desc 'Kill Jekyll server.'
   task :kill do
    system("killp jekyll")
+  end
+
+
+  desc "Convert HAML to html"
+  task :haml => ['cv/index.haml']
+
+
+  desc "Convert HAML to html"
+  file 'cv/index.haml' => 'cv/index.html' do
+    rm 'cv/index.html'
+    sh 'cv/meta.sh > cv/index.html && haml cv/index.haml >> cv/index.html'
   end
 
 end
