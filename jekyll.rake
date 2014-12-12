@@ -22,4 +22,10 @@ namespace :jekyll do
     sh 'cv/meta.sh > cv/index.html && haml cv/index.haml >> cv/index.html'
   end
 
+  desc "Clean Jekyll project"
+  task :clean do
+    system("rm -rf '.sass_cache'")
+    system("rm -rf '_site'")
+  end
+
 end
