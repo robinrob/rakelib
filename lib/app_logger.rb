@@ -63,8 +63,7 @@ class AppLogger
 
   private
   def app_loggers
-    [config_logger(STDOUT),
-     config_logger("logs/#{DateTime.now().strftime(AppConfig::DATE_FORMAT)}.log")]
+    [config_logger(STDOUT)]
   end
 
 

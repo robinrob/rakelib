@@ -130,7 +130,7 @@ namespace :git do
 
   desc 'Export all repos to github'
   task :export_all do
-    GitRepo.new({:name => `basename #{ENV['PWD']}`,
+    GitRepo.new({:name => `basename #{`pwd`}`,
                  :path => './',
                  :owner => 'robinrob'}).export_all
   end
