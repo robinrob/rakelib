@@ -35,5 +35,5 @@ desc 'Stage, commit, pull & push.'
 task :save, [:msg, :remote] => ['git:commit'] do |t, args|
   remote = args[:remote] || 'github'
   Rake::Task["git:pull"].invoke(remote)
-  # Rake::Task["git:push"].execute(remote)
+  Rake::Task["git:push"].execute(remote)
 end
