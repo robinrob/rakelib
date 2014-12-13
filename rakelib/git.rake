@@ -26,7 +26,7 @@ namespace :git do
   task :push, [:remote] do |t, args|
     remote = args[:remote] || 'github'
 
-    git("push -u #{remote} #{branch()}")
+    git("push -u #{remote} #{branch}")
   end
 
 
@@ -34,8 +34,6 @@ namespace :git do
   task :pull, [:remote] do |t, args|
     remote = args[:remote] || 'github'
 
-    cmd = "pull -u #{remote} #{branch}"
-    puts cmd
     git("pull -u #{remote} #{branch}")
   end
 
