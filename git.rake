@@ -10,12 +10,12 @@ require 'gitconfigfile'
 namespace :git do
   desc 'Commit changes to git.'
 	task :commit, [:msg] => [:clean, :add, :status] do |t, args|
-    msg = args[:msg] || "Auto-update."
+    msg = ENV['msg'] || args[:msg] || "Auto-update."
 
 	  git("commit -m '#{msg}'")
 	end
-	
-	
+
+
   desc 'Stage changes in git.'
 	task :add do
 	  git("add -A")
@@ -24,7 +24,7 @@ namespace :git do
 
   desc 'Push changes to corresponding branch at remote.'
   task :push, [:remote] do |t, args|
-    remote = args[:remote] || 'github'
+    remote = ENV['remote'] || args[:remote] || 'github'
 
     git("push -u #{remote} #{branch}")
   end
@@ -32,7 +32,7 @@ namespace :git do
 
   desc 'Pull changes from corresponding branch at remote.'
   task :pull, [:remote] do |t, args|
-    remote = args[:remote] || 'github'
+    remote = ENV['remote'] || args[:remote] || 'github'
 
     git("pull -u #{remote} #{branch}")
   end
@@ -50,8 +50,8 @@ namespace :git do
 	  git_log_medium_format = "%C(bold)Commit%C(reset) %C(green)%H%C(red)%d%n%C(bold)Author%C(reset) %C(cyan)%an <%ae>%n%C(bold)Date%C(reset)   %C(blue)%ai (%ar)%C(reset)%n%+B"
 	  #git_log_oneline_format = "%C(green)%h%C(reset) %s%C(red)%d%C(reset)%n"
 	  #git_log_brief_format = "%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(reset)%n"
-	
-	
+
+
 	  # Git aliases
 	  #gl="git log --topo-order --pretty=format${_git_log_medium_format}" + wrap_quotes(git_log_medium_format)
 	  gls="git log --topo-order --stat --pretty=format" + wrap_quotes(git_log_medium_format)
@@ -60,7 +60,7 @@ namespace :git do
 	  #glg="git log --topo-order --all --graph --pretty=format" + wrap_quotes(git_log_oneline_format)
 	  #glb="git log --topo-order --pretty=format" + wrap_quotes(git_log_brief_format)
 	  #glc="git shortlog --summary --numbered"
-	
+
 	  system(gls)
 	end
 
@@ -68,12 +68,12 @@ namespace :git do
 	desc 'Deinit a git submodule and remove it from .gitmodules.'
 	task :deinit, [:arg1] do |t, args|
 	  submodule = args[:arg1]
-	
+
 	  puts "Deinit repo: ".red + "#{submodule}".green
 	  `rm -rf #{submodule}`
 	  `git rm -rf --ignore-unmatch --cached #{submodule}`
 	  `git submodule deinit #{submodule} 2> /dev/null`
-	
+
 	  file = GitConfigFile.new(:filename => '.gitmodules')
 	  file.del_block submodule
 	  file.sort!
@@ -110,7 +110,7 @@ namespace :git do
 
 
   desc 'Add mrrobinsmith.com heroku remotes'
-  task :remotes do 
+  task :remotes do
     puts "Adding mrrobinsmith.com heroku remotes ..."
     git 'remote add mrrobinsmith git@heroku.com:mrrobinsmith.git 2> /dev/null'
     git 'remote add mrrobinsmith-stage git@heroku.com:mrrobinsmith-stage.git 2> /dev/null'
