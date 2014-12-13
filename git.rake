@@ -111,7 +111,7 @@ namespace :git do
   end
 
 
-  desc 'Add mrrobinsmith.com heroku remotes'
+  desc 'Add mrrobitbucketnsmith.com heroku remotes'
   task :remotes do
     puts "Adding mrrobinsmith.com heroku remotes ..."
     git 'remote add mrrobinsmith git@heroku.com:mrrobinsmith.git 2> /dev/null'
