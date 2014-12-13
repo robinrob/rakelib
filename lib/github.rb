@@ -20,6 +20,9 @@ class Github
     repo_url = "git@bitbucket.org:#{@auth[:username]}/#{repo_name}.git"
     new_url = "git@github.com:#{@auth[:username]}/#{repo_name}.git"
 
+    @log.info "Adding new remote named 'github'".green
+    `git remote add github #{new_url}`
+
     created = false
     @log.info "Creating new repository in Github: #{new_url}"
     response = create_repo repo_name, repo_name
@@ -32,7 +35,6 @@ class Github
 
     if created
       @log.info "Pushing to new repository: #{new_url}"
-      `git remote add github #{new_url}`
       `git push github master`
     end
   end
