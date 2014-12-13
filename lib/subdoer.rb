@@ -39,6 +39,33 @@ class SubDoer
   end
 
 
+  def foreach(repo, config={})
+    @counter += 1
+    parent_dir = Dir.pwd
+    Dir.chdir("#{repo.path}")
+
+    nest
+    if config[:recurse_down]
+      yield
+    end
+
+    if (config[:not_recursive] == nil) && (repo.submodules.length > 0)
+      puts "#{indent}Recursing into #{repo.path} ...".cyan
+
+      repo.submodules.each do |submodule|
+        foreach(submodule, config) do
+          yield
+        end
+      end
+    end
+
+    unless config[:recurse_down]
+      yield
+    end
+    denest_to(parent_dir)
+  end
+
+
   private
   def do_repo(repo, command, config)
     puts "#{arrow} #{entering_repo(repo.path)}"

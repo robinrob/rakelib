@@ -5,6 +5,8 @@ $LOAD_PATH << 'rakelib/lib'
 require 'colorize'
 require 'gitrepo'
 require 'gitconfigfile'
+require 'github'
+require 'app_config'
 
 
 namespace :git do
@@ -114,6 +116,23 @@ namespace :git do
     puts "Adding mrrobinsmith.com heroku remotes ..."
     git 'remote add mrrobinsmith git@heroku.com:mrrobinsmith.git 2> /dev/null'
     git 'remote add mrrobinsmith-stage git@heroku.com:mrrobinsmith-stage.git 2> /dev/null'
+  end
+
+
+  desc 'Export repo to github'
+  task :export, [:repo] do |t, args|
+    repo = args[:repo]
+
+    github = Github.new AppConfig::GITHUB_USER, AppConfig::SECRETS[:github_password]
+    github.import repo
+  end
+
+
+  desc 'Export all repos to github'
+  task :export_all do
+    GitRepo.new({:name => `basename #{ENV['PWD']}`,
+                 :path => './',
+                 :owner => 'robinrob'}).export_all
   end
 end
 

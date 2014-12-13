@@ -1,4 +1,6 @@
 require 'subdoer'
+require 'github'
+require 'app_config'
 
 class GitRepo
 
@@ -22,6 +24,15 @@ class GitRepo
         :max_nesting => doer.max_nesting,
         :counter => doer.counter
     }
+  end
+
+
+  def export_all
+    doer = SubDoer.new
+    doer.foreach(self) do
+      github = Github.new AppConfig::GITHUB_USER, AppConfig::SECRETS[:github_password]
+      github.import
+    end
   end
 
 
@@ -51,5 +62,11 @@ class GitRepo
 
   def add_sub(sub)
     @submodules << sub
+  end
+
+
+  def export_to_github
+    github = Github.new AppConfig::GITHUB_USER, AppConfig::SECRETS[:github_password]
+    github.import :name
   end
 end
