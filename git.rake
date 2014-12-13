@@ -20,20 +20,24 @@ namespace :git do
 	task :add do
 	  git("add -A")
 	end
-	
 
-  desc 'Push changes to corresponding branch at origin.'
-	task :push do
-	  git("push -u origin " + branch())
-	end
-	
 
-  desc 'Pull changes from corresponding branch at origin.'
-	task :pull do
-	  git("pull origin " + branch())
-	end
-	
-	
+  desc 'Push changes to corresponding branch at remote.'
+  task :push, [:remote] do |t, args|
+    remote = args[:remote] || 'github'
+
+    git("push -u #{remote} #{branch}")
+  end
+
+
+  desc 'Pull changes from corresponding branch at remote.'
+  task :pull, [:remote] do |t, args|
+    remote = args[:remote] || 'github'
+
+    git("pull -u #{remote} #{branch}")
+  end
+
+
   desc 'Git status.'
 	task :status do
 	  git("status")

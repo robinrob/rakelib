@@ -30,7 +30,7 @@ namespace :git do
   end
 
 
-  desc 'Pull changes from corresponding branch at origin.'
+  desc 'Pull changes from corresponding branch at remote.'
   task :pull, [:remote] do |t, args|
     remote = args[:remote] || 'github'
 
