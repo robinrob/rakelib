@@ -3,7 +3,7 @@ require 'rake/testtask'
 
 
 task :install do
-  system("bundle install")
+   system("bundle install")
 end
 
 
@@ -33,7 +33,10 @@ end
 
 desc 'Stage, commit, pull & push.'
 task :save, [:msg, :remote] => ['git:commit'] do |t, args|
-  remote = ENV['remote'] || 'bitbucket'
+  remote = ENV['remote'] || args[:remote] || 'bitbucket'
+
+
+
   Rake::Task["git:pull"].invoke(remote)
   Rake::Task["git:push"].invoke(remote)
 end
