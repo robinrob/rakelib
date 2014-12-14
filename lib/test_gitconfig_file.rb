@@ -2,8 +2,8 @@ $LOAD_PATH << '.'
 
 require 'test/unit'
 
-require 'gitconfigfile'
-require 'gitconfigblockbuilder'
+require 'gitconfig_file'
+require 'gitconfig_block_builder'
 require 'differ'
 require 'console'
 require 'exceptions'

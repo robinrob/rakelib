@@ -2,6 +2,9 @@ require 'httparty'
 require 'app_logger'
 require 'colorize'
 
+# Github encapsulates interaction with the Github REST API to provide an easy interface for management actions for a
+# Github account.
+
 class Github
   include HTTParty
   base_uri "https://api.github.com"

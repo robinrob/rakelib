@@ -1,4 +1,11 @@
-class SubDoer
+# GitSubDoer encapsulates logic for recursing through a Git repository tree and performing an action for each
+# repository linked via the tree.
+#
+# Recursion can be performed upwards or downwards.
+#
+# The action can be described as either a system command (each_exec), or as a code block (each).
+
+class GitSubDoer
 
   Indentation = "            |"
   Me = 'robinrob'
@@ -14,12 +21,12 @@ class SubDoer
   end
 
 
-  def each_sub(repo, command, config={})
+  # Run a system command for each Git repository in the tree
+  def each_exec(repo, command, config={})
     @counter += 1
     parent_dir = Dir.pwd
-    Dir.chdir("#{repo.path}")
 
-    nest
+    nest_to("#{repo.path}")
     if config[:recurse_down]
       do_repo(repo, command, config)
     end
@@ -39,12 +46,13 @@ class SubDoer
   end
 
 
-  def foreach(repo, config={})
+  # Run (yield) a passed-in code block for each Git repository in the tree
+  def each(repo, config={})
     @counter += 1
     parent_dir = Dir.pwd
     Dir.chdir("#{repo.path}")
 
-    nest
+    nest_to("#{repo.path}")
     if config[:recurse_down]
       yield
     end
@@ -113,15 +121,16 @@ class SubDoer
   end
 
 
-  def nest
+  def nest_to(dir)
+    Dir.chdir(dir)
     @depth += 1
     if nesting > @max_nesting then @max_nesting = nesting end
   end
 
 
   def denest_to(parent_dir)
-    @depth -= 1
     Dir.chdir(parent_dir)
+    @depth -= 1
   end
 
 end

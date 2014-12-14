@@ -2,8 +2,8 @@ $LOAD_PATH << '.'
 
 require 'test/unit'
 
-require 'gitconfigreader'
-require 'gitconfigblock'
+require 'gitconfig_reader'
+require 'gitconfig_block'
 
 
 class TestGitConfigReader < Test::Unit::TestCase

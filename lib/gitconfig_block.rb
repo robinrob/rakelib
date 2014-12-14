@@ -1,3 +1,11 @@
+# GitConfigBlock models a section of gitconfig-type file, such as a submodule declaration within a .gitmodules file.
+#
+# GitConfigBlock reads in a section of text that represents a gitconfig block and provides an interface to the values
+# within that block.
+#
+# GitConfigBlock also provides an interface to 'derived' attributes, such as the 'owner' of a submodule represented by a
+# .gitmodules declaration block.
+
 class GitConfigBlock
   AttributeIndent = 2
 

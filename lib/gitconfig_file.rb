@@ -1,6 +1,10 @@
 require 'assert'
-require 'gitconfigreader'
-require 'gitconfigblockcollection'
+require 'gitconfig_reader'
+require 'gitconfig_block_collection'
+
+# GitConfigFile models a .gitconfig-style Git configuration file.
+#
+# GitConfigFile provides an interface for management actions on a Git configuration file.
 
 class GitConfigFile
 

@@ -1,3 +1,5 @@
+# Custom exceptions
+
 class FileNotFoundException < Exception
 end
 

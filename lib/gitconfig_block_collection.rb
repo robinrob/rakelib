@@ -1,3 +1,5 @@
+# GitConfigBlockCollection provdes an interface for attributes of - and actions on - a collection of GitConfigBlocks.
+
 class GitConfigBlockCollection
 
   attr_accessor :blocks

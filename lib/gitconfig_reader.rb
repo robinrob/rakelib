@@ -1,10 +1,10 @@
 $LOAD_PATH << '.'
 $LOAD_PATH << 'rake'
 
-require 'gitconfigblock'
+require 'gitconfig_block'
 
-# Reads a file with format of .gitconfig, for example .gitmodules and returns an array of hashes.
-# Each hash represents a block of the config file, containing the config in a 'flat' csv-like structure.
+# GitConfigReader reads a .gitconfig-style configuration file into a GitConfigBlockCollection.
+
 class GitConfigReader
 
   def read(filename='.gitconfig')

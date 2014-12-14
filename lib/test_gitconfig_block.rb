@@ -1,8 +1,8 @@
 $LOAD_PATH << '.'
 
 require 'test/unit'
-require 'gitconfigblock'
-require 'gitconfigblockbuilder'
+require 'gitconfig_block'
+require 'gitconfig_block_builder'
 
 
 class TestGitConfigBlock < Test::Unit::TestCase

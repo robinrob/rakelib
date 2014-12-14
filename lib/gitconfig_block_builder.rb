@@ -1,4 +1,6 @@
-require 'gitconfigblock'
+require 'gitconfig_block'
+
+# GitConfigBlockBuilder provides an easy way to initialise a GitConfigBlock for use in unit tests or other logic.
 
 class GitConfigBlockBuilder
 

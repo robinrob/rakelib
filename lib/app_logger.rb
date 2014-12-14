@@ -4,15 +4,41 @@ require 'logger'
 require 'app_config'
 require 'date'
 
+
+# AppLogger encapsulates different types of logger to provide a simple logger interface to multiple loggers - e.g.
+# console loggers, file loggers.
+#
+# Console loggers produce color-coded output for different log severities.
+#
+# AppLogger can be initialised repeatedly from different parts of the application - and will be initialised with the
+# same logger objects that were setup on first initialisation. This makes usage very simple: just do AppLogger.new to get
+# the application logger.
+
 class AppLogger
 
+  @@file_loggers = nil
+  @@console_loggers = nil
+
   @@loggers = nil
-  @@secrets = AppConfig::SECRETS
+
+  # Something to use to filter out any application secrets, just in case they have crept into a log statement somewhere.
+  @@secrets = AppConfig::Secrets
+
+  Colors = {
+      :debug => :cyan,
+      :info => :green,
+      :warn => :yellow,
+      :error => :magenta,
+      :fatal => :red
+  }
 
 
   def initialize(prefix="")
     if @@loggers.nil?
-      @@loggers = app_loggers
+      @@loggers = {
+          :console => console_loggers,
+          :file => file_loggers
+      }
     end
     @prefix = prefix
   end
@@ -62,27 +88,38 @@ class AppLogger
 
 
   private
-  def app_loggers
+  def log(severity, msg)
+    msg = "#{@prefix}: #{sanitize(msg)}"
+
+    @@loggers[:console].each do |logger|
+      logger.send(severity, msg.send(Colors[:severity]))
+    end
+
+    @@loggers[:file].each do |logger|
+      logger.send(severity, msg)
+    end
+  end
+
+
+  def console_loggers
     [config_logger(STDOUT)]
+  end
+
+
+  def file_loggers
+    [config_logger("logs/#{DateTime.now().strftime(AppConfig::DateFormat)}.log")]
   end
 
 
   def config_logger(type)
     logger = Logger.new(type)
-    if AppConfig::DEBUG
-      logger.level = Logger::DEBUG
+    if AppConfig::Debug
+      logger.level = Logger::Debug
     else
       logger.level = Logger::INFO
     end
-    logger.datetime_format = AppConfig::DATE_FORMAT
+    logger.datetime_format = AppConfig::DateFormat
     logger
-  end
-
-
-  def log(method, msg)
-    @@loggers.each do |logger|
-      logger.send(method, "#{@prefix}: #{sanitize(msg)}")
-    end
   end
 
 

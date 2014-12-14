@@ -3,8 +3,8 @@ $LOAD_PATH << 'lib'
 $LOAD_PATH << 'rakelib/lib'
 
 require 'colorize'
-require 'gitrepo'
-require 'gitconfigfile'
+require 'git_repo'
+require 'gitconfig_file'
 require 'github'
 require 'app_config'
 
@@ -123,7 +123,7 @@ namespace :git do
   task :export, [:repo] do |t, args|
     repo = args[:repo]
 
-    github = Github.new AppConfig::GITHUB_USER, AppConfig::SECRETS[:github_password]
+    github = Github.new AppConfig::GithubUser, AppConfig::Secrets[:github_password]
     github.import repo
   end
 

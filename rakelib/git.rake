@@ -3,23 +3,25 @@ $LOAD_PATH << 'lib'
 $LOAD_PATH << 'rakelib/lib'
 
 require 'colorize'
-require 'gitrepo'
-require 'gitconfigfile'
+require 'git_repo_tree'
+require 'gitconfig_file'
+require 'github'
+require 'app_config'
 
 
 namespace :git do
   desc 'Commit changes to git.'
-	task :commit, [:msg] => [:clean, :add, :status] do |t, args|
+  task :commit, [:msg] => [:clean, :add, :status] do |t, args|
     msg = ENV['msg'] || args[:msg] || "Auto-update."
 
-	  git("commit -m '#{msg}'")
-	end
+    git("commit -m '#{msg}'")
+  end
 
 
   desc 'Stage changes in git.'
-	task :add do
-	  git("add -A")
-	end
+  task :add do
+    git("add -A")
+  end
 
 
   desc 'Push changes to corresponding branch at remote.'
@@ -39,45 +41,45 @@ namespace :git do
 
 
   desc 'Git status.'
-	task :status do
-	  git("status")
-	end
+  task :status do
+    git("status")
+  end
 
 
   desc 'Git log with fancy output.'
-	task :log do
-	  # Git formats
-	  git_log_medium_format = "%C(bold)Commit%C(reset) %C(green)%H%C(red)%d%n%C(bold)Author%C(reset) %C(cyan)%an <%ae>%n%C(bold)Date%C(reset)   %C(blue)%ai (%ar)%C(reset)%n%+B"
-	  #git_log_oneline_format = "%C(green)%h%C(reset) %s%C(red)%d%C(reset)%n"
-	  #git_log_brief_format = "%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(reset)%n"
+  task :log do
+    # Git formats
+    git_log_medium_format = "%C(bold)Commit%C(reset) %C(green)%H%C(red)%d%n%C(bold)Author%C(reset) %C(cyan)%an <%ae>%n%C(bold)Date%C(reset)   %C(blue)%ai (%ar)%C(reset)%n%+B"
+    #git_log_oneline_format = "%C(green)%h%C(reset) %s%C(red)%d%C(reset)%n"
+    #git_log_brief_format = "%C(green)%h%C(reset) %s%n%C(blue)(%ar by %an)%C(red)%d%C(reset)%n"
 
 
-	  # Git aliases
-	  #gl="git log --topo-order --pretty=format${_git_log_medium_format}" + wrap_quotes(git_log_medium_format)
-	  gls="git log --topo-order --stat --pretty=format" + wrap_quotes(git_log_medium_format)
-	  #gld="git log --topo-order --stat --patch --full-diff --pretty=format" + wrap_quotes(git_log_medium_format)
-	  #glo="git log --topo-order --pretty=format" + wrap_quotes(git_log_oneline_format)
-	  #glg="git log --topo-order --all --graph --pretty=format" + wrap_quotes(git_log_oneline_format)
-	  #glb="git log --topo-order --pretty=format" + wrap_quotes(git_log_brief_format)
-	  #glc="git shortlog --summary --numbered"
+    # Git aliases
+    #gl="git log --topo-order --pretty=format${_git_log_medium_format}" + wrap_quotes(git_log_medium_format)
+    gls="git log --topo-order --stat --pretty=format" + wrap_quotes(git_log_medium_format)
+    #gld="git log --topo-order --stat --patch --full-diff --pretty=format" + wrap_quotes(git_log_medium_format)
+    #glo="git log --topo-order --pretty=format" + wrap_quotes(git_log_oneline_format)
+    #glg="git log --topo-order --all --graph --pretty=format" + wrap_quotes(git_log_oneline_format)
+    #glb="git log --topo-order --pretty=format" + wrap_quotes(git_log_brief_format)
+    #glc="git shortlog --summary --numbered"
 
-	  system(gls)
-	end
+    system(gls)
+  end
 
 
-	desc 'Deinit a git submodule and remove it from .gitmodules.'
-	task :deinit, [:arg1] do |t, args|
-	  submodule = args[:arg1]
+  desc 'Deinit a git submodule and remove it from .gitmodules.'
+  task :deinit, [:arg1] do |t, args|
+    submodule = args[:arg1]
 
-	  puts "Deinit repo: ".red + "#{submodule}".green
-	  `rm -rf #{submodule}`
-	  `git rm -rf --ignore-unmatch --cached #{submodule}`
-	  `git submodule deinit #{submodule} 2> /dev/null`
+    puts "Deinit repo: ".red + "#{submodule}".green
+    `rm -rf #{submodule}`
+    `git rm -rf --ignore-unmatch --cached #{submodule}`
+    `git submodule deinit #{submodule} 2> /dev/null`
 
-	  file = GitConfigFile.new(:filename => '.gitmodules')
-	  file.del_block submodule
-	  file.sort!
-	  file.save
+    file = GitConfigFile.new(:filename => '.gitmodules')
+    file.del_block submodule
+    file.sort!
+    file.save
   end
 
 
@@ -109,11 +111,28 @@ namespace :git do
   end
 
 
-  desc 'Add mrrobinsmith.com heroku remotes'
+  desc 'Add mrrobitbucketnsmith.com heroku remotes'
   task :remotes do
     puts "Adding mrrobinsmith.com heroku remotes ..."
     git 'remote add mrrobinsmith git@heroku.com:mrrobinsmith.git 2> /dev/null'
     git 'remote add mrrobinsmith-stage git@heroku.com:mrrobinsmith-stage.git 2> /dev/null'
+  end
+
+
+  desc 'Export repo to github'
+  task :export, [:repo] do |t, args|
+    repo = args[:repo]
+
+    github = Github.new AppConfig::GithubUser, AppConfig::Secrets[:github_password]
+    github.import repo
+  end
+
+
+  desc 'Export all repos to github'
+  task :export_all do
+    GitRepo.new({:name => `basename #{`pwd`}`,
+                 :path => './',
+                 :owner => 'robinrob'}).export_all
   end
 end
 
@@ -129,5 +148,5 @@ end
 
 
 def branch()
-	`git branch | grep '*'`[2...-1]
+  `git branch | grep '*'`[2...-1]
 end
