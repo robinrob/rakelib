@@ -95,7 +95,7 @@ namespace :git do
     unless command.nil?
       puts "Quiet mode!".light_blue if quiet
 
-      result = GitRepo.new(:name => 'root', :path => './').each_sub(command, config)
+      result = GitRepoTree.new(:name => 'root', :path => './').each_sub(command, config)
     end
 
     puts "Ran for ".green << "#{result[:counter]}".yellow << " repositories.".green \

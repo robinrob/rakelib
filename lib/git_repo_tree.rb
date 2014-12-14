@@ -29,8 +29,9 @@ class GitRepoTree
 
 
   def each_sub(command, config={})
-    doer = SubDoer.new
+    doer = GitSubDoer.new
     doer.each_exec(self, command, config)
+
     {
         :max_nesting => doer.max_nesting,
         :counter => doer.counter
