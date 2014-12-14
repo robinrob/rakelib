@@ -92,7 +92,7 @@ class AppLogger
     msg = "#{@prefix}: #{sanitize(msg)}"
 
     @@loggers[:console].each do |logger|
-      logger.send(severity, msg.send(Colors[:severity]))
+      logger.send(severity, msg.send(Colors[severity]))
     end
 
     @@loggers[:file].each do |logger|

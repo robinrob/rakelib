@@ -41,12 +41,12 @@ class GitRepoTree
 
   def export_to_github
     github = Github.new AppConfig::GithubUser, AppConfig::Secrets[:github_password]
-    github.import :name
+    github.import
   end
 
 
   def export_all_to_github
-    doer = SubDoer.new
+    doer = GitSubDoer.new
     doer.each(self) do
       github = Github.new AppConfig::GithubUser, AppConfig::Secrets[:github_password]
       github.import

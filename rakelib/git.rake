@@ -119,20 +119,19 @@ namespace :git do
   end
 
 
-  desc 'Export repo to github'
-  task :export, [:repo] do |t, args|
-    repo = args[:repo]
-
-    github = Github.new AppConfig::GithubUser, AppConfig::Secrets[:github_password]
-    github.import repo
+  desc 'Export the current repo to github'
+  task :export_to_github  do
+    GitRepoTree.new({:name => `basename #{`pwd`}`,
+                     :path => './',
+                     :owner => 'robinrob'}).export_to_github
   end
 
 
-  desc 'Export all repos to github'
-  task :export_all do
-    GitRepo.new({:name => `basename #{`pwd`}`,
+  desc 'Export all repos in tree to github'
+  task :export_all_to_github do
+    GitRepoTree.new({:name => `basename #{`pwd`}`,
                  :path => './',
-                 :owner => 'robinrob'}).export_all
+                 :owner => 'robinrob'}).export_all_to_github
   end
 end
 

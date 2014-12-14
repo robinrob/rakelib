@@ -7,7 +7,9 @@ require 'colorize'
 
 class Github
   include HTTParty
+
   base_uri "https://api.github.com"
+
 
   def initialize(username, password)
     @auth = { :username => username, :password => password}
@@ -17,6 +19,8 @@ class Github
 
 
   public
+
+  # Import the current repository at `pwd` into Github
   def import
     repo_name = `basename #{`pwd`}`.strip
 
@@ -30,10 +34,10 @@ class Github
     @log.info "Creating new repository in Github: #{new_url}"
     response = create_repo repo_name, repo_name
     if response.has_key? "id"
-      @log.info "Request successful.".green
+      @log.info "Request successful."
       created = true
     else
-      @log.info "Response: #{response}".red
+      @log.error "Response: #{response}"
     end
 
     if created
