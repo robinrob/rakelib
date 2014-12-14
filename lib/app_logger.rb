@@ -35,6 +35,10 @@ class AppLogger
 
   def initialize(prefix="")
     if @@loggers.nil?
+      unless Dir.exists?('logs')
+        Dir.mkdir 'logs'
+      end
+
       @@loggers = {
           :console => console_loggers,
           :file => file_loggers

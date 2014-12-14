@@ -26,19 +26,22 @@ class GitSubDoer
     @counter += 1
     parent_dir = Dir.pwd
 
+    # Perform the action (downwards recursion)
     nest_to("#{repo.path}")
     if config[:recurse_down]
       do_repo(repo, command, config)
     end
 
+    # The recurse-or-not check
     if (config[:not_recursive] == nil) && (repo.submodules.length > 0)
       puts "#{indent}Recursing into #{repo.path} ...".cyan
 
       repo.submodules.each do |submodule|
-        each_sub(submodule, command, config)
+        each_exec(submodule, command, config)
       end
     end
 
+    # Perform the action (upwards recursion)
     unless config[:recurse_down]
       do_repo(repo, command, config)
     end
@@ -50,8 +53,8 @@ class GitSubDoer
   def each(repo, config={})
     @counter += 1
     parent_dir = Dir.pwd
-    Dir.chdir("#{repo.path}")
 
+    # Perform the action (downwards recursion)
     nest_to("#{repo.path}")
     if config[:recurse_down]
       yield
@@ -61,12 +64,13 @@ class GitSubDoer
       puts "#{indent}Recursing into #{repo.path} ...".cyan
 
       repo.submodules.each do |submodule|
-        foreach(submodule, config) do
+        each(submodule, config) do
           yield
         end
       end
     end
 
+    # Perform the action (upwards recursion)
     unless config[:recurse_down]
       yield
     end

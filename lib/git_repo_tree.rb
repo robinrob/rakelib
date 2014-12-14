@@ -62,7 +62,7 @@ class GitRepoTree
         blocks.each do |block|
           parent = Dir.pwd
           Dir.chdir block.attrs[:path]
-          add_sub GitRepo.new({
+          add_sub GitRepoTree.new({
                                   :name => block.name,
                                   :path => block.attrs[:path],
                                   :owner => block.derived_attrs[:owner]
