@@ -28,7 +28,7 @@ class GitRepoTree
   end
 
 
-  def each_sub(command, config={})
+  def each_exec(command, config={})
     doer = GitSubDoer.new
     doer.each_exec(self, command, config)
 
