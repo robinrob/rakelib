@@ -33,7 +33,7 @@ end
 
 desc 'Stage, commit, pull & push.'
 task :save, [:msg, :remote] => ['git:commit'] do |t, args|
-  remote = ENV['remote'] || args[:remote] || 'github'
+  remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
 
 
