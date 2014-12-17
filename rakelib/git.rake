@@ -26,7 +26,7 @@ namespace :git do
 
   desc 'Push changes to corresponding branch at remote.'
   task :push, [:remote] do |t, args|
-    remote = ENV['remote'] || args[:remote] || 'github'
+    remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
     git("push -u #{remote} #{branch}")
   end
@@ -34,7 +34,7 @@ namespace :git do
 
   desc 'Pull changes from corresponding branch at remote.'
   task :pull, [:remote] do |t, args|
-    remote = ENV['remote'] || args[:remote] || 'github'
+    remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
     git("pull -u #{remote} #{branch}")
   end
@@ -95,7 +95,7 @@ namespace :git do
     unless command.nil?
       puts "Quiet mode!".light_blue if quiet
 
-      result = GitRepoTree.new(:name => 'root', :path => './').each_sub(command, config)
+      result = GitRepoTree.new(:name => 'root', :path => './').each_exec(command, config)
     end
 
     puts "Ran for ".green << "#{result[:counter]}".yellow << " repositories.".green \
@@ -130,8 +130,8 @@ namespace :git do
   desc 'Export all repos in tree to github'
   task :export_all_to_github do
     GitRepoTree.new({:name => `basename #{`pwd`}`,
-                 :path => './',
-                 :owner => 'robinrob'}).export_all_to_github
+                     :path => './',
+                     :owner => 'robinrob'}).export_all_to_github
   end
 end
 
