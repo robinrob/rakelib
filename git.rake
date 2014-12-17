@@ -26,7 +26,7 @@ namespace :git do
 
   desc 'Push changes to corresponding branch at remote.'
   task :push, [:remote] do |t, args|
-    remote = ENV['remote'] || args[:remote] || 'github'
+    remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
     git("push -u #{remote} #{branch}")
   end
@@ -34,7 +34,7 @@ namespace :git do
 
   desc 'Pull changes from corresponding branch at remote.'
   task :pull, [:remote] do |t, args|
-    remote = ENV['remote'] || args[:remote] || 'github'
+    remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
     git("pull -u #{remote} #{branch}")
   end
