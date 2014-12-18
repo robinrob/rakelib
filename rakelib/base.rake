@@ -3,7 +3,7 @@ require 'rake/testtask'
 
 
 task :install do
-   system("bundle install")
+  system("bundle install")
 end
 
 
