@@ -12,14 +12,13 @@ class GitConfigFile
 
 
   def initialize(options={})
-    filename = options[:filename] || '.gitconfig'
+    @filename = options[:filename] || '.gitconfig'
     blocks = options[:blocks] || nil
 
-    @filename = filename
 
     if blocks.nil?
-      if File.exists? filename
-        @blocks = GitConfigReader.new.read(filename)
+      if File.exists? @filename
+        @blocks = GitConfigReader.new.read(@filename)
       else
         raise FileNotFoundException
       end
@@ -43,6 +42,10 @@ class GitConfigFile
   def save
     File.open(@filename, "w") do |file|
       file.write(serialize)
+    end
+
+    if blocks.length == 0
+      File.delete @filename
     end
   end
 

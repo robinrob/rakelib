@@ -13,7 +13,9 @@ class GitConfigReader
 
     blocks = []
 
-    text.split(/(\[.*\])/)[1..-1].each_slice(2) { |block_str| blocks << GitConfigBlock.new(block_str.join) }
+    unless text == ""
+      text.split(/(\[.*\])/)[1..-1].each_slice(2) { |block_str| blocks << GitConfigBlock.new(block_str.join) }
+    end
 
     blocks
   end

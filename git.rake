@@ -1,7 +1,7 @@
 $LOAD_PATH << '.'
 $LOAD_PATH << 'lib'
 $LOAD_PATH << 'rakelib/lib'
-$LOAD_PATH << ENV['RAKELIB']
+$LOAD_PATH << "#{ENV['RAKELIB']}/lib"
 
 require 'colorize'
 require 'git_repo_tree'
