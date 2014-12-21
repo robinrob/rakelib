@@ -27,6 +27,7 @@ namespace :git do
       git("add -A")
     else
       puts "Not staging".red
+      exit 1
     end
   end
 
