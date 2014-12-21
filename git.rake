@@ -23,7 +23,7 @@ namespace :git do
   task :add do
     modified = `git ls-files --modified 2> /dev/null`
 
-    if modified != ""
+    if !modified.empty?
       git("add -A")
     else
       puts "Not staging".red

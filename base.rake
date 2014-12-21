@@ -10,13 +10,13 @@ end
 desc 'Clean temporary files.'
 task :clean do
   system("find . -name '*~' -delete")
+  system("find . -name '*.class' -delete")
   # Mess created by git merge
   system("find . -name '*.orig' -delete")
   system("find . -name '*.BACKUP*' -delete")
   system("find . -name '*.BASE*' -delete")
   system("find . -name '*.LOCAL*' -delete")
   system("find . -name '*.REMOTE*' -delete")
-  system("find . -name '*.class' -delete")
 end
 
 
@@ -37,4 +37,12 @@ task :save, [:msg, :remote] => ['git:commit'] do |t, args|
 
   Rake::Task["git:pull"].invoke(remote)
   Rake::Task["git:push"].invoke(remote)
+end
+
+
+def git_changes
+  modified = `git ls-files --modified 2> /dev/null`
+  untracked = `git ls-files --others 2> /dev/null`
+
+  !modified.empty? or !untracked.empty?
 end
