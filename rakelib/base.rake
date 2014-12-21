@@ -37,7 +37,7 @@ task :save, [:msg, :remote] => ['git:commit'] do |t, args|
 
   modified = `git ls-files --modified 2> /dev/null`
 
-  if modified
+  if modified != ""
     Rake::Task["git:pull"].invoke(remote)
     Rake::Task["git:push"].invoke(remote)
   end
