@@ -22,7 +22,7 @@ namespace :git do
   desc 'Stage changes in git.'
   task :add do
     modified = `git ls-files --modified 2> /dev/null`
-    
+
     if modified != ""
       git("add -A")
     else
