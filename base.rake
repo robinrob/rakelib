@@ -40,5 +40,7 @@ task :save, [:msg, :remote] => ['git:commit'] do |t, args|
   if modified != ""
     Rake::Task["git:pull"].invoke(remote)
     Rake::Task["git:push"].invoke(remote)
+  else
+    puts "Not saving".red
   end
 end
