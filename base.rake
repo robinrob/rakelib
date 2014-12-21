@@ -35,8 +35,10 @@ desc 'Stage, commit, pull & push.'
 task :save, [:msg, :remote] => ['git:commit'] do |t, args|
   remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
+  modified = `git ls-files --modified 2> /dev/null`
 
-
-  Rake::Task["git:pull"].invoke(remote)
-  Rake::Task["git:push"].invoke(remote)
+  if modified
+    Rake::Task["git:pull"].invoke(remote)
+    Rake::Task["git:push"].invoke(remote)
+  end
 end
