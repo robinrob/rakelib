@@ -18,7 +18,14 @@ namespace :git do
 
   desc 'Stage changes in git.'
   task :add do
-    git("add -A")
+    modified = `git ls-files --modified 2> /dev/null`
+
+    if !modified.empty?
+      git("add -A")
+    else
+      puts "Not staging".red
+      exit 1
+    end
   end
 
 
