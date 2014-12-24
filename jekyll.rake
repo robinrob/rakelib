@@ -12,21 +12,22 @@ namespace :jekyll do
   end
 
 
-  desc "Convert HAML to html"
-  task :haml => ['cv/index.haml']
+  desc "Generate HTML from HAML"
+  task :haml => ['cv/index.html']
 
 
-  desc "Convert HAML to html"
-  file 'cv/index.haml' => 'cv/index.html' do
-    puts "Converting cv/index.haml => cd/index.html".magenta
-    rm 'cv/index.html'
+  desc "Generate CV HTML from HAML"
+  file 'cv/index.html' => 'cv/index.haml' do
+    puts "Generating cv/index.html from cv/index.haml".magenta
+    sh 'rm -f cv/index.html'
     sh 'cv/meta.sh > cv/index.html && haml cv/index.haml >> cv/index.html'
   end
 
+
   desc "Clean Jekyll project"
-  task :clean do
-    system("rm -rf '.sass_cache'")
-    system("rm -rf '_site'")
+  task :clean => 'base:clean' do
+    sh "rm -rf '.sass_cache'"
+    sh "rm -rf '_site'"
   end
 
 
