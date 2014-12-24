@@ -18,6 +18,7 @@ namespace :jekyll do
 
   desc "Convert HAML to html"
   file 'cv/index.haml' => 'cv/index.html' do
+    puts "Converting cv/index.haml => cd/index.html".magenta
     rm 'cv/index.html'
     sh 'cv/meta.sh > cv/index.html && haml cv/index.haml >> cv/index.html'
   end
@@ -28,4 +29,8 @@ namespace :jekyll do
     system("rm -rf '_site'")
   end
 
+
+  task :save, [:msg, :remote] => ['jekyll:haml', 'base:save']
+
 end
+
