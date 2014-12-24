@@ -28,7 +28,7 @@ namespace :git do
     end
 
     if !untracked.empty?
-      git("add -u *")
+      git("add -A")
     else
       puts "No untracked files to be staged.".red
     end
