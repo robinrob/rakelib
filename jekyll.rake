@@ -2,7 +2,7 @@ namespace :jekyll do
 
   desc 'Start Jekyll server.'
 	task :server => [:kill, :haml] do
-	  system("jekyll serve --watch")
+	  system("jekyll serve--host=0.0.0.0 --watch")
 	end
 
 
