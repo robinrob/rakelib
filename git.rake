@@ -21,13 +21,14 @@ namespace :git do
     modified = `git ls-files --modified 2> /dev/null`
     untracked = `git ls-files --others 2> /dev/null`
 
-    if !modified.empty?
+    unless modified.empty?
       git("add -A")
     else
       puts "No modifications to be staged.".red
     end
 
-    if !untracked.empty?
+
+    unless untracked.empty?
       git("add -A")
     else
       puts "No untracked files to be staged.".red
