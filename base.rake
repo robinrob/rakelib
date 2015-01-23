@@ -18,8 +18,6 @@ namespace :base do
     system("find . -name '*.BASE*' -delete")
     system("find . -name '*.LOCAL*' -delete")
     system("find . -name '*.REMOTE*' -delete")
-    # Binary files
-    system("find . -name '*.pyc' -delete")
   end
 
 
