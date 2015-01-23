@@ -18,24 +18,27 @@ namespace :git do
 
   desc 'Stage changes in git.'
   task :add do
-    modified = `git ls-files --modified 2> /dev/null`
-    untracked = `git ls-files --others 2> /dev/null`
+    git("add -A")
 
-    if !modified.empty?
-      git("add -A")
-    else
-      puts "No modifications to be staged.".red
-    end
-
-    if !untracked.empty?
-      git("add -A")
-    else
-      puts "No untracked files to be staged.".red
-    end
-
-    if modified.empty? and untracked.empty?
-      exit 1
-    end
+    # modified = `git ls-files --modified 2> /dev/null`
+    # untracked = `git ls-files --others 2> /dev/null`
+    #
+    # unless modified.empty?
+    #   git("add -A")
+    # else
+    #   puts "No modifications to be staged.".red
+    # end
+    #
+    #
+    # unless untracked.empty?
+    #   git("add -A")
+    # else
+    #   puts "No untracked files to be staged.".red
+    # end
+    #
+    # if modified.empty? and untracked.empty?
+    #   exit 1
+    # end
   end
 
 
