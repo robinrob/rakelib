@@ -8,10 +8,10 @@ require 'colorize'
 
 namespace :cocos do
 
-  desc 'Run the project in the default browser.'
+  desc 'Run the project in the specified or default browser.'
 	task :run, [:where] do |t, args|
-  where = args[:where] || 'web'
-	  system("cocos run -p #{where} -b 'Google\ Chrome'")
+  where = args[:where] || "Google\ Chrome"
+	  system("cocos run -p web -b '#{where}'")
 	end
 
 end
