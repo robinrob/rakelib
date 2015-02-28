@@ -12,7 +12,9 @@ namespace :git do
   task :commit, [:msg] => ['base:clean', :add, :status] do |t, args|
     msg = ENV['msg'] || args[:msg] || "Auto-update."
 
-    git("commit -m '#{msg}'")
+    cmd="commit -m '#{msg}'"
+    print cmd
+    git(cmd)
   end
 
 
