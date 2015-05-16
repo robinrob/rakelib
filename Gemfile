@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'colorize'
+# gem 'colorize'
 gem 'differ'
 gem 'httparty'
