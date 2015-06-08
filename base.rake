@@ -10,14 +10,18 @@ namespace :base do
 
   desc 'Clean temporary files.'
   task :clean do
-    system("find . -name '*~' -delete")
-    system("find . -name '*.class' -delete")
-    # Mess created by git merge
-    system("find . -name '*.orig' -delete")
-    system("find . -name '*.BACKUP*' -delete")
-    system("find . -name '*.BASE*' -delete")
-    system("find . -name '*.LOCAL*' -delete")
-    system("find . -name '*.REMOTE*' -delete")
+    find_delete('*~')
+    find_delete('*.class')
+    find_delete('*.orig')
+    find_delete('*.BACKUP*')
+    find_delete('*.BASE*')
+    find_delete('*.LOCAL*')
+    find_delete('*.REMOTE*')
+  end
+
+
+  def find_delete(pattern)
+    system("find . -maxdepth 1 -name '#{pattern}' -delete")
   end
 
 
