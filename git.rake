@@ -48,7 +48,7 @@ namespace :git do
   task :push, [:remote] do |t, args|
     remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
-    git("push -u #{remote} #{branch}")
+    git("push -u #{remote} #{branch()}")
   end
 
 
@@ -56,7 +56,7 @@ namespace :git do
   task :pull, [:remote] do |t, args|
     remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
-    git("pull -u #{remote} #{branch}")
+    git("pull -u #{remote} #{branch()}")
   end
 
 
