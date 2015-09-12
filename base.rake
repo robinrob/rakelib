@@ -21,7 +21,7 @@ namespace :base do
 
 
   def find_delete(pattern)
-    system("find . -maxdepth 1 -name '#{pattern}' -delete")
+    system("find . -name '#{pattern}' -delete")
   end
 
 

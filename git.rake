@@ -10,7 +10,7 @@ require 'app_config'
 namespace :git do
   desc 'Commit changes to git.'
   task :commit, [:msg] => ['base:clean', :add, :status] do |t, args|
-    msg = ENV['msg'] || args[:msg] || "Auto-update."
+    msg = ENV['msg'] || args[:msg] || ENV['GIT_QUICKSAVE_MSG']
 
     cmd="commit -m '#{msg}'"
     print cmd
