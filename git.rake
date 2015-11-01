@@ -56,7 +56,7 @@ namespace :git do
   task :pull, [:remote] do |t, args|
     remote = ENV['remote'] || args[:remote] || ENV['DEFAULT_GIT_REMOTE']
 
-    git("pull -u #{remote} #{branch()}")
+    git("pull #{remote} #{branch()}")
   end
 
 
