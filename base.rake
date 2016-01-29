@@ -12,6 +12,7 @@ namespace :base do
   task :clean do
     find_delete('*~')
     find_delete('*.class')
+    find_delete('*.pyc')
     find_delete('*.orig')
     find_delete('*.BACKUP*')
     find_delete('*.BASE*')
