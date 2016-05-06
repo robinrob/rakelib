@@ -9,20 +9,32 @@ namespace :base do
 
 
   desc 'Clean temporary files.'
-  task :clean do
-    find_delete('*~')
-    find_delete('*.class')
-    find_delete('*.pyc')
-    find_delete('*.orig')
-    find_delete('*.BACKUP*')
-    find_delete('*.BASE*')
-    find_delete('*.LOCAL*')
-    find_delete('*.REMOTE*')
+  task :clean, [:where] do |t, args|
+    where = args[:where] || '.'
+    find_delete_all(
+        [
+            '*~',
+            '*.class',
+            '*.pyc',
+            '*.orig',
+            '*BACKUP*',
+            '*BASE*',
+            '*LOCAL*',
+            '*REMOTE*'
+        ],
+        where=where
+    )
+  end
+
+  def find_delete_all(patterns, where='.')
+    patterns.each do |pattern|
+      find_delete(pattern, where)
+    end
   end
 
 
-  def find_delete(pattern)
-    system("find . -name '#{pattern}' -delete")
+  def find_delete(pattern, where='.')
+    system("find #{where} -name '#{pattern}' -delete")
   end
 
 
