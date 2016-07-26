@@ -33,8 +33,8 @@ namespace :base do
   end
 
 
-  def find_delete(pattern, where='.')
-    system("find #{where} -name '#{pattern}' -delete")
+  def find_delete(pattern, where='.', depth=1)
+    system("find #{where} -name '#{pattern}' -maxdepth #{depth} -delete")
   end
 
 
