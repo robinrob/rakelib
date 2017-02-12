@@ -11,6 +11,7 @@ namespace :base do
   desc 'Clean temporary files.'
   task :clean, [:where] do |t, args|
     where = args[:where] || '.'
+    puts "Cleaning: ".green << "#{where}".yellow
     find_delete_all(
         [
             '*~',
@@ -20,7 +21,9 @@ namespace :base do
             '*BACKUP*',
             '*BASE*',
             '*LOCAL*',
-            '*REMOTE*'
+            '*REMOTE*',
+            '*.doctree',
+            '*.pickle'
         ],
         where=where
     )
@@ -33,7 +36,7 @@ namespace :base do
   end
 
 
-  def find_delete(pattern, where='.', depth=1)
+  def find_delete(pattern, where='.', depth=10)
     system("find #{where} -name '#{pattern}' -maxdepth #{depth} -delete")
   end
 
