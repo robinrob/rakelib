@@ -23,7 +23,7 @@ namespace :base do
             '*LOCAL*',
             '*REMOTE*',
             '*.doctree',
-            '*.pickle'
+            '*.pickle',
         ],
         where=where
     )
